@@ -1,0 +1,26 @@
+<?php
+/** @var Magento\Framework\View\Element\Template $block
+ *  @var Devall\Linkedin\ViewModel\CustomerEdit $linkedinVm
+ */
+
+$linkedinVm = $block->getData('linkedin_vm');
+$linkedin = $linkedinVm->getCustomerLinkedin();
+$linkedinVisible = $linkedinVm->isLinkedinProfileVisible();
+$linkedinRequired = $linkedinVm->isLinkedinProfileRequired();
+?>
+
+<div class="field linkedin-profile <?= $linkedinRequired ? 'required' : '' ?>"
+    <?= $linkedinVisible ? '' : 'style="display: none;"' ?>>
+
+    <label class="label" for="linkedin_profile">
+        <span><?= $block->escapeHtml(__('Linkedin profile')) ?></span>
+    </label>
+    <div class="control">
+        <input type="text" name="linkedin_profile" id="linkedin-profile"
+               value="<?= $linkedin; ?>"
+               title="<?= $block->escapeHtml(__('Linkedin profile')) ?>"
+               class="input-text"
+               data-validate="{required: <?= $linkedinRequired ? 'true' : 'false' ?>}, 'validate-linkedIn': true"
+        >
+    </div>
+</div>

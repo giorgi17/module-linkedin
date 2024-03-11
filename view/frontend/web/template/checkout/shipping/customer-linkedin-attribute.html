@@ -1,0 +1,33 @@
+<!--<div class="field linkedin-profile _required">-->
+<!--    <label class="label" for="linkedin_profile">-->
+<!--        <span data-bind="i18n: 'Linkedin Profile'"></span>-->
+<!--    </label>-->
+<!--    <div class="control">-->
+<!--        <input class="input-text" type="text" name="linkedin_profile"-->
+<!--               id="linkedin_profile"-->
+<!--               data-bind="value: getLinkedinProfile()"-->
+<!--               data-validate="{required:true}">-->
+<!--    </div>-->
+<!--</div>-->
+
+<!-- New -->
+<div class="field required">
+    <label class="label" for="linkedin_profile">
+        <span data-bind="i18n: 'Linkedin Profile'"></span>
+    </label>
+    <div class="control">
+        <input class="required-entry" type="text" name="linkedin_profile"
+               id="linkedin_profile"
+               data-bind="textInput: linkedinProfileLink">
+    </div>
+</div>
+
+<!--<div class="field required">-->
+<!--    <label class="label" for="doctor-name"><span data-bind="i18n: 'Doctor\'s name'"></span></label>-->
+<!--    <input class="required-entry"-->
+<!--           type="text"-->
+<!--           data-bind="textInput: doctorName"-->
+<!--           name="doctor-name"-->
+<!--           id="doctor-name"/>-->
+<!--</div>-->
+
