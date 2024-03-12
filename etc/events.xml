@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="devall_linkedin_update_linkedin_profile_required_status">
+        <observer name="devall_linkedin_observer_update_linkedin_profile_required_status"
+                  instance="Devall\Linkedin\Observer\UpdateLinkedinRequiredStatus" />
+    </event>
+
+    <event name="checkout_controller_onepage_save_shipping_method">
+        <observer name="add_custom_attribute_to_quote" instance="Devall\Linkedin\Observer\AddLinkedinAttributeToQuote" />
+    </event>
+</config>

@@ -1,0 +1,12 @@
+<!-- ko if: isVisible -->
+<div class="field" data-bind="css: { required: isRequired }">
+    <label class="label" for="linkedin_profile">
+        <span data-bind="i18n: 'Linkedin Profile'"></span>
+    </label>
+    <div class="control">
+        <input data-bind="value: linkedinProfileValue, css: { 'error': inputError, 'required-entry': isRequired }" type="text" name="linkedin_profile"
+               id="linkedin_profile">
+        <label id="linkedin_profile-error" class="error" for="linkedin_profile" style="display: none;"></label>
+    </div>
+</div>
+<!-- /ko -->

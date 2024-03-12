@@ -1,0 +1,23 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Validator\Factory">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="linkedin_profile_validator" xsi:type="object">
+                    Devall\Linkedin\Model\Attribute\Validation\LinkedinProfileValidator
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\Model\AbstractModel">
+        <plugin name="LinkedinProfileValidatorPlugin"
+                type="Devall\Linkedin\Plugin\LinkedinProfileValidatorPlugin"/>
+    </type>
+
+    <type name="Magento\Checkout\Api\ShippingInformationManagementInterface">
+        <plugin name="devall_linkedin_save_shipping_address_extension_attributes"
+                type="Devall\Linkedin\Plugin\SaveShippingAddressExtensionAttributes"/>
+    </type>
+
+    <preference for="Devall\Linkedin\Api\MyCustomCustomerApiInterface" type="Devall\Linkedin\Model\MyCustomCustomerApi" />
+</config>
