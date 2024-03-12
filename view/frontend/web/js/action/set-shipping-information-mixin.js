@@ -1,39 +1,61 @@
 define([
+    'uiRegistry',
     'mage/utils/wrapper',
     'Magento_Checkout/js/model/quote',
     'jquery',
+    'mage/storage',
+    'mage/url',
+    'Devall_Linkedin/js/model/linkedin-input-meta',
 ], function(
+    registry,
     wrapper,
     quote,
     $,
+    storage,
+    url,
+    linkedinInputMeta,
 ) {
     'use strict';
 
-    $.validator.addMethod("linkedinProfileValidation", function(value, element) {
-        // Regular expression to validate URL format
-        const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+    const showErrors = (errorMessage) => {
+        $('#linkedin_profile-error').html(errorMessage).show();
+    }
 
-        // Check if the value is a valid URL and has a maximum length of 250 characters
-        return urlPattern.test(value) && value.length <= 250;
-    }, "Please enter a valid LinkedIn profile");
+    const clearErrors = () => {
+        $('#linkedin_profile-error').hide();
+    }
 
-    const validateLinkedinProfile = function () {
-        const formElement = $('.form-shipping-address');
+    const isLinkedinValidMethod = function (linkedinValue, callback) {
+        const deferred = $.Deferred();
 
-        formElement.validate({
-            rules: {
-                'linkedin_profile': {
-                    required: true,
-                    linkedinProfileValidation: true // Use the custom validation method
+        const serviceUrl = url.build('linkedin/linkedinvalidate/isvalid');
+        const postData = {
+            linkedinLink: linkedinValue,
+        };
+
+        storage.post(serviceUrl, JSON.stringify(postData)).done(
+            function (response) {
+                if (response?.isValid) {
+                    deferred.resolve(callback());
+                    clearErrors();
+                } else {
+                    const message = response?.messages[0];
+                    showErrors(message);
+
+                    deferred.reject();
                 }
             }
-        });
+        ).fail(
+            function (response) {
+                return response.value
+            }
+        );
 
-        return formElement.valid();
+        return deferred.promise();
     }
 
     return function(setShippingInformationAction) {
-        return wrapper.wrap(setShippingInformationAction, function(originalAction) {
+        return wrapper.wrap(setShippingInformationAction,  function(originalAction) {
             const attributeCode = 'linkedin_profile';
             const shippingAddress = quote.shippingAddress();
             const attribute = $(`#${attributeCode}`).val();
@@ -44,12 +66,13 @@ define([
                 shippingAddress.extension_attributes[attributeCode] = attribute;
             }
 
-            const isInputValid = validateLinkedinProfile();
-
-            if (isInputValid) {
-                return originalAction();
+            if (linkedinInputMeta.isVisible()) {
+                if (!linkedinInputMeta.isRequired() && attribute === '')
+                    return originalAction();
+                else
+                    return isLinkedinValidMethod(attribute, originalAction);
             } else {
-                console.log('CustomerLinkedinValidation', 'CustomerLinkedin is not valid');
+                return originalAction();
             }
         });
     };

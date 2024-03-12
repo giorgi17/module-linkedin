@@ -2,6 +2,7 @@
 
 namespace Devall\Linkedin\Model\Attribute\Validation;
 
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Validator\AbstractValidator;
 use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory as CustomerCollectionFactory;
 use Magento\Customer\Model\Session as CustomerSession;
@@ -11,6 +12,7 @@ class LinkedinProfileValidator extends AbstractValidator
     public function __construct(
         private CustomerCollectionFactory $customerCollectionFactory,
         private CustomerSession $customerSession,
+        private ScopeConfigInterface $scopeConfig,
     )
     {
     }
@@ -64,9 +66,21 @@ class LinkedinProfileValidator extends AbstractValidator
                 if ($loggedInCustomerId !== $retrievedCustomerId) {
                     return false;
                 }
+            } else {
+                return false;
             }
         }
 
         return true;
+    }
+
+    public function isLinkedinProfileVisible(): bool
+    {
+        return (bool)$this->scopeConfig->getValue('devall_linkedin/general/linkedin_visibility');
+    }
+
+    public function isLinkedinProfileRequired(): bool
+    {
+        return (bool)$this->scopeConfig->getValue('devall_linkedin/general/linkedin_required');
     }
 }

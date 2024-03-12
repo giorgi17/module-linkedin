@@ -2,12 +2,11 @@
 
 namespace Devall\Linkedin\ViewModel;
 
+use Devall\Linkedin\Model\Attribute\Validation\LinkedinProfileValidator;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Validator\Factory as ValidatorFactory;
-use Magento\Framework\Validator\ValidatorInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Quote\Model\QuoteFactory;
 use Magento\Quote\Model\ResourceModel\Quote as QuoteResourceModel;
@@ -20,7 +19,7 @@ class CustomerEdit implements ArgumentInterface
         private CustomerRepositoryInterface $customerRepository,
         private Session $customerSession,
         private ScopeConfigInterface $scopeConfig,
-        private ValidatorFactory $validatorFactory,
+        private LinkedinProfileValidator $linkedinProfileValidator,
         private CheckoutSession $checkoutSession,
         private QuoteFactory $quoteFactory,
         private QuoteResourceModel $quoteResourceModel,
@@ -31,9 +30,7 @@ class CustomerEdit implements ArgumentInterface
 
     public function validateLinkedinProfile($value): bool
     {
-        /** @var ValidatorInterface $validator */
-        $validator = $this->validatorFactory->create('linkedin_profile_validator');
-        return $validator->isValid($value);
+        return $this->linkedinProfileValidator->isValid($value);
     }
 
     public function getCustomerLinkedin() {
@@ -67,11 +64,11 @@ class CustomerEdit implements ArgumentInterface
 
     public function isLinkedinProfileVisible(): bool
     {
-        return (bool)$this->scopeConfig->getValue('devall_linkedin/general/linkedin_visibility');
+        return $this->linkedinProfileValidator->isLinkedinProfileVisible();
     }
 
     public function isLinkedinProfileRequired(): bool
     {
-        return (bool)$this->scopeConfig->getValue('devall_linkedin/general/linkedin_required');
+        return $this->linkedinProfileValidator->isLinkedinProfileRequired();
     }
 }
