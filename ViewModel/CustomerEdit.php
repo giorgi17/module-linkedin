@@ -27,12 +27,6 @@ class CustomerEdit implements ArgumentInterface
     )
     {
     }
-
-    public function validateLinkedinProfile($value): bool
-    {
-        return $this->linkedinProfileValidator->isValid($value);
-    }
-
     public function getCustomerLinkedin() {
         $previousUrl = $this->request->getServer('HTTP_REFERER');
         $previousUrlPath = parse_url($previousUrl)['path'];

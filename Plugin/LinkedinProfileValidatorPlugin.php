@@ -20,8 +20,11 @@ class LinkedinProfileValidatorPlugin
      */
     public function beforeSave(AbstractModel $subject): array
     {
+
         if ($subject->getEventPrefix() === 'customer') {
-            if (array_key_exists('linkedin_profile', $_POST)) {
+            $validate = !$subject->getData('ignore_validation_flag');
+
+            if (array_key_exists('linkedin_profile', $_POST) && $validate) {
                 $linkedinProfileValue = $_POST['linkedin_profile'];
                 if ($linkedinProfileValue) {
                     if (!$this->linkedinProfileValidator->isValid($linkedinProfileValue)) {
