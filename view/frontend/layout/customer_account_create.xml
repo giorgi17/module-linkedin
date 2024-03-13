@@ -1,0 +1,13 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      layout="1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="form.additional.info">
+            <block name="linkedin_profile" template="Devall_Linkedin::linkedin_profile_extra_register_field.phtml">
+                <arguments>
+                    <argument name="linkedin_vm" xsi:type="object">Devall\Linkedin\ViewModel\CustomerEdit</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
